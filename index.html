@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Trivsel, оценки, пропуски и рамки трёх копенгагенских школ по годам — официальная статистика uddannelsesstatistik.dk.">
+<title>Sydhavn, Sluseholmen, Sankt Annæ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Sans:wght@500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f5f7f8; --surface:#ffffff; --surface-2:#eef2f4; --line:#d9e0e4; --line-soft:#e7ecef;
+  --ink:#10181d; --ink-2:#44525b; --ink-3:#6c7a83;
+  --accent:#0f5e7a;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --ref:#7d8a92;
+  --good:#1d7a45; --good-bg:#e3f3e8; --bad:#b4471f; --bad-bg:#fbe9e1;
+  --focus:#0f5e7a;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#101517; --surface:#171e21; --surface-2:#1e272b; --line:#2d393e; --line-soft:#243035;
+    --ink:#eef3f5; --ink-2:#b5c2c8; --ink-3:#8898a0;
+    --accent:#6fc3dd;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --ref:#8a979e;
+    --good:#6fd39a; --good-bg:#16301f; --bad:#f09a74; --bad-bg:#3a2119;
+    --focus:#6fc3dd;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#101517; --surface:#171e21; --surface-2:#1e272b; --line:#2d393e; --line-soft:#243035;
+  --ink:#eef3f5; --ink-2:#b5c2c8; --ink-3:#8898a0;
+  --accent:#6fc3dd;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --ref:#8a979e;
+  --good:#6fd39a; --good-bg:#16301f; --bad:#f09a74; --bad-bg:#3a2119;
+  --focus:#6fc3dd;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:"Instrument Sans","IBM Plex Sans",system-ui,sans-serif;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,38px);line-height:1.15;font-weight:700}
+h2{font-size:22px;font-weight:600}
+h3{font-size:15px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--ink-3)}
+.small{font-size:13px}
+header{display:flex;flex-direction:column;gap:14px}
+.schools{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:8px}
+.school{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.school .nm{display:flex;align-items:center;gap:8px;font-weight:600}
+.sw{width:12px;height:12px;border-radius:3px;flex:none}
+.sw.s1{background:var(--s1)}.sw.s2{background:var(--s2)}.sw.s3{background:var(--s3)}
+.sw.ref{background:none;border-top:2px dashed var(--ref);border-radius:0;height:0;width:16px}
+.school .facts{font-size:13px;color:var(--ink-2)}
+section{display:flex;flex-direction:column;gap:16px}
+.sec-head{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:24px}
+.findings{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.findings ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;max-width:80ch}
+.findings b{font-weight:600}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .cap{font-size:12.5px;color:var(--ink-3)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font:11px "IBM Plex Mono",ui-monospace,monospace;fill:var(--ink-3)}
+.chart .grid{stroke:var(--line-soft);stroke-width:1}
+.chart .axis{stroke:var(--line);stroke-width:1}
+.chart .xh{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:2 3}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;box-shadow:0 6px 18px rgba(0,0,0,.12);min-width:150px;z-index:5}
+.tip .t{font:500 12px "IBM Plex Mono",monospace;margin-bottom:4px;color:var(--ink-2)}
+.tip .r{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.tip .r span:first-child{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2)}
+.tip .v{font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--surface-2);border-radius:8px;padding:3px;gap:2px}
+.seg button{border:0;background:none;font:500 13px "IBM Plex Sans",sans-serif;color:var(--ink-2);padding:6px 11px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.ctl-label{font-size:12px;color:var(--ink-3);margin-right:6px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line-soft)}
+th:first-child,td:first-child{text-align:left}
+thead th{font:500 12px "IBM Plex Sans",sans-serif;color:var(--ink-3);background:var(--surface-2);position:sticky;top:0}
+thead th .sw{display:inline-block;vertical-align:-1px;margin-right:6px}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+td.ref{color:var(--ink-3)}
+td.grp{background:var(--surface-2);font-weight:600;color:var(--ink-2);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.cell{display:inline-flex;align-items:center;gap:5px;padding:1px 6px;border-radius:5px}
+.cell.good{background:var(--good-bg);color:var(--good)}
+.cell.bad{background:var(--bad-bg);color:var(--bad)}
+.cell i{font-style:normal;font-size:10px}
+.note-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--ink-2);font-size:13.5px;max-width:90ch}
+.keyrow{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--ink-3)}
+.keyrow .cell{font-size:12px}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Københavns Kommune · Den Nationale Trivselsmåling · 2014/15–2025/26</div>
+  <h1>Skolen i Sydhavnen, Sluseholmen Skole и Sankt Annæ: сравнение по годам</h1>
+  <p class="muted">Все цифры — официальная статистика Børne- og Undervisningsministeriet (API uddannelsesstatistik.dk), выгружена 21.09.2026. Пунктир на графиках и серый столбец в таблицах — среднее по Københavns Kommune.</p>
+  <div class="schools" id="schools"></div>
+</header>
+
+<section>
+  <div class="findings">
+    <h3 style="margin-bottom:10px">Главное</h3>
+    <ul id="findings"></ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Сводка</div><h2>Последний доступный год</h2>
+  <p class="muted small">Цветом отмечено отклонение от среднего по Копенгагену: ▲ лучше, ▼ хуже. Разница меньше порога (0,1 балла trivsel, 1 п.п. для процентов, 0,2 для оценок) не подсвечивается.</p></div>
+  <div class="tbl-wrap"><table id="summary"></table></div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Trivsel · вся школа</div><h2>Trivsel по годам</h2>
+  <p class="muted small">Индикаторы — средний балл по шкале 1–5 для учеников 4–9 классов. Доля с высоким trivsel — доля учеников в верхней категории общего trivsel.</p></div>
+  <div class="legend" id="legend-main"></div>
+  <div class="grid2">
+    <div class="card"><h3>Доля учеников с высоким trivsel, %</h3><div class="chart" id="c-hoj"></div></div>
+    <div class="card"><h3>Общий trivsel (Generel trivsel), 1–5</h3><div class="chart" id="c-gen"></div></div>
+  </div>
+  <div class="grid2" id="c-ind"></div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Trivsel · по классам</div><h2>Сопоставимо: один и тот же класс</h2>
+  <p class="muted small">Здесь убрано влияние возраста: каждая школа сравнивается с другими и с Копенгагеном на одном и том же классе. У Sluseholmen данные есть только с 2023/24 и только для 4–6 классов.</p></div>
+  <div class="controls">
+    <div><span class="ctl-label">Индикатор</span><span class="seg" id="g-ind"></span></div>
+    <div><span class="ctl-label">Класс</span><span class="seg" id="g-grade"></span></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3 id="g-chart-title"></h3><div class="chart" id="c-grade"></div><div class="cap" id="g-cap"></div></div>
+    <div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap" style="border:0;border-radius:0"><table id="t-grade"></table></div></div>
+  </div>
+  <h3 style="margin-top:8px" id="g-matrix-title"></h3>
+  <div class="controls"><div><span class="ctl-label">Год</span><span class="seg" id="g-year"></span></div></div>
+  <div class="tbl-wrap"><table id="t-matrix"></table></div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Faglighed · 9 класс</div><h2>Оценки и эффект обучения</h2>
+  <p class="muted small">Выпускных экзаменов у Sluseholmen пока нет: у школы ещё не было 9 класса. «Эффект обучения» — разница между средней оценкой и ожидаемой по социоэкономическому фону учеников (socioøkonomisk reference); ноль значит «как ожидалось». С 2025/26 выпускной экзамен состоит из 6 обязательных предметов вместо 8, поэтому последний год с прошлыми напрямую не сравнивается.</p></div>
+  <div class="legend" id="legend-acad"></div>
+  <div class="grid2">
+    <div class="card"><h3>Средняя оценка на обязательных экзаменах 9 класса</h3><div class="chart" id="c-kar"></div></div>
+    <div class="card"><h3>Эффект обучения (факт − ожидание)</h3><div class="chart" id="c-soc"></div></div>
+  </div>
+  <div class="controls"><div><span class="ctl-label">Показатель</span><span class="seg" id="a-metric"></span></div></div>
+  <div class="tbl-wrap"><table id="t-acad"></table></div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Fravær</div><h2>Пропуски</h2>
+  <p class="muted small">Доля пропущенных учебных дней за год, все классы. Данные за 2025/26 пока не опубликованы. Скачок 2021/22 — эффект COVID во всех школах страны.</p></div>
+  <div class="grid2">
+    <div class="card"><h3>Все пропуски, % учебных дней</h3><div class="chart" id="c-frav"></div></div>
+    <div class="card"><h3>Прогулы без уважительной причины (ulovligt), %</h3><div class="chart" id="c-ulov"></div></div>
+  </div>
+  <div class="controls"><div><span class="ctl-label">Показатель</span><span class="seg" id="f-metric"></span></div></div>
+  <div class="tbl-wrap"><table id="t-frav"></table></div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Rammer</div><h2>Размер школы, классы, учителя, переход дальше</h2>
+  <p class="muted small">Kompetencedækning — доля уроков, которые ведёт учитель с профильной подготовкой по этому предмету. Overgang — доля выпускников 9–10 классов, которые в сентябре следующего года учатся в гимназии или профучилище (ungdomsuddannelse).</p></div>
+  <div class="controls"><div><span class="ctl-label">Показатель</span><span class="seg" id="r-metric"></span></div></div>
+  <div class="grid2">
+    <div class="card"><h3 id="r-title"></h3><div class="chart" id="c-ram"></div></div>
+    <div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap" style="border:0;border-radius:0"><table id="t-ram"></table></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="eyebrow">Как читать</div><h2>Оговорки</h2></div>
+  <ul class="note-list">
+    <li><b>Sankt Annæ — не районная школа.</b> Это коммунальная школа с музыкальным профилем и вступительным отбором, а не школа по месту жительства. Её ученики — отобранная группа, поэтому высокие оценки во многом отражают отбор. Именно поэтому важнее «эффект обучения», а он у Sankt Annæ с 2020/21 «på niveau».</li>
+    <li><b>Sluseholmen — молодая и маленькая школа</b> (открыта в 2019/20, в 2025/26 — 407 учеников). В каждом классе 30–45 ответов, поэтому отдельный год может колебаться на ±0,2 балла. Старших классов, экзаменов и данных о переходе дальше пока нет.</li>
+    <li><b>У Skolen i Sydhavnen в 2014–2016 годах</b> по trivsel отвечали 28–118 учеников, так что ранние точки шумные.</li>
+    <li>Индикаторы trivsel считаются как среднее по нескольким вопросам (шкала 1–5). Разница в 0,1 балла обычно в пределах шума, в 0,3 и больше — существенна: средние школ Копенгагена лежат примерно в диапазоне 3,5–3,8.</li>
+    <li>Годы указаны как учебные: «2025/26» — замер весны 2026 года.</li>
+  </ul>
+  <p class="small muted">Источник: <a href="https://api.uddannelsesstatistik.dk">Uddannelsesstatistik API</a> (разделы Elevtrivsel · Trivselsindikatorer, Skoleoverblik, Elevfravær, Karakterer, Elevtal). Коды школ: Skolen i Sydhavnen 280129, Sluseholmen Skole 281060, Sankt Annæ Gymnasiums Grundskole 101158.</p>
+</section>
+</div>
+
+<script>
+const D = {"over":{"SAG":{"2018/2019":{"Elevtal":577.0,"Gns. elevtal Kommune":615.0,"Klassekvotient":27.8,"Klassekvotient Kommune":23.3,"Klassekvotient Land":21.3,"Samlet elevfravær":null,"Samlet elevfravær Kommune":null,"Samlet elevfravær Land":null,"Karaktergennemsnit":9.3,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.5,"Kompetencedækning":91.6,"Kompetencedækning Kommune":86.8,"Kompetencedækning Land":87.6,"SocRef Forskel":0.7,"SocRef Karaktergennemsnit":9.0,"SocRef Socioøkonomisk reference":8.3,"Andel med højest trivsel":91.6,"Andel med højest trivsel Kommune":91.0,"Andel med højest trivsel Land":91.5,"Overgang til UU fra 9. og 10. kl. sept året efter":90.2,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":88.4,"Overgang til UU fra 9. og 10. kl. sept året efter Land":86.1,"sig":"Over niveau"},"2019/2020":{"Elevtal":576.0,"Gns. elevtal Kommune":603.0,"Klassekvotient":27.6,"Klassekvotient Kommune":23.3,"Klassekvotient Land":21.2,"Samlet elevfravær":4.7,"Samlet elevfravær Kommune":6.1,"Samlet elevfravær Land":5.3,"Karaktergennemsnit":8.8,"Karaktergennemsnit Kommune":7.6,"Karaktergennemsnit Land":7.5,"Kompetencedækning":89.6,"Kompetencedækning Kommune":86.4,"Kompetencedækning Land":88.4,"SocRef Forskel":0.5,"SocRef Karaktergennemsnit":8.6,"SocRef Socioøkonomisk reference":8.1,"Andel med højest trivsel":93.9,"Andel med højest trivsel Kommune":91.9,"Andel med højest trivsel Land":91.9,"Overgang til UU fra 9. og 10. kl. sept året efter":93.8,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":88.3,"Overgang til UU fra 9. og 10. kl. sept året efter Land":86.9,"sig":"Over niveau"},"2020/2021":{"Elevtal":574.0,"Gns. elevtal Kommune":605.0,"Klassekvotient":27.5,"Klassekvotient Kommune":23.0,"Klassekvotient Land":21.1,"Samlet elevfravær":4.3,"Samlet elevfravær Kommune":5.7,"Samlet elevfravær Land":5.1,"Karaktergennemsnit":9.0,"Karaktergennemsnit Kommune":8.1,"Karaktergennemsnit Land":8.0,"Kompetencedækning":null,"Kompetencedækning Kommune":null,"Kompetencedækning Land":null,"SocRef Forskel":0.1,"SocRef Karaktergennemsnit":8.8,"SocRef Socioøkonomisk reference":8.7,"Andel med højest trivsel":93.9,"Andel med højest trivsel Kommune":90.6,"Andel med højest trivsel Land":90.9,"Overgang til UU fra 9. og 10. kl. sept året efter":92.1,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":86.6,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.9,"sig":"På niveau"},"2021/2022":{"Elevtal":573.0,"Gns. elevtal Kommune":582.0,"Klassekvotient":27.5,"Klassekvotient Kommune":22.5,"Klassekvotient Land":21.0,"Samlet elevfravær":8.6,"Samlet elevfravær Kommune":9.0,"Samlet elevfravær Land":8.1,"Karaktergennemsnit":9.2,"Karaktergennemsnit Kommune":8.1,"Karaktergennemsnit Land":7.9,"Kompetencedækning":90.4,"Kompetencedækning Kommune":83.6,"Kompetencedækning Land":86.4,"SocRef Forskel":0.5,"SocRef Karaktergennemsnit":9.1,"SocRef Socioøkonomisk reference":8.6,"Andel med højest trivsel":89.5,"Andel med højest trivsel Kommune":89.6,"Andel med højest trivsel Land":89.8,"Overgang til UU fra 9. og 10. kl. sept året efter":98.7,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":87.3,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.5,"sig":"Over niveau"},"2022/2023":{"Elevtal":574.0,"Gns. elevtal Kommune":598.0,"Klassekvotient":27.5,"Klassekvotient Kommune":22.3,"Klassekvotient Land":20.9,"Samlet elevfravær":6.8,"Samlet elevfravær Kommune":7.6,"Samlet elevfravær Land":7.2,"Karaktergennemsnit":8.5,"Karaktergennemsnit Kommune":7.6,"Karaktergennemsnit Land":7.3,"Kompetencedækning":85.9,"Kompetencedækning Kommune":83.2,"Kompetencedækning Land":86.6,"SocRef Forskel":0.3,"SocRef Karaktergennemsnit":8.6,"SocRef Socioøkonomisk reference":8.3,"Andel med højest trivsel":92.3,"Andel med højest trivsel Kommune":87.5,"Andel med højest trivsel Land":87.5,"Overgang til UU fra 9. og 10. kl. sept året efter":96.2,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":87.0,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.3,"sig":"På niveau"},"2023/2024":{"Elevtal":564.0,"Gns. elevtal Kommune":584.0,"Klassekvotient":27.3,"Klassekvotient Kommune":22.6,"Klassekvotient Land":20.9,"Samlet elevfravær":6.7,"Samlet elevfravær Kommune":7.6,"Samlet elevfravær Land":7.4,"Karaktergennemsnit":8.6,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.3,"Kompetencedækning":87.7,"Kompetencedækning Kommune":83.5,"Kompetencedækning Land":86.3,"SocRef Forskel":0.3,"SocRef Karaktergennemsnit":8.6,"SocRef Socioøkonomisk reference":8.3,"Andel med højest trivsel":94.0,"Andel med højest trivsel Kommune":87.0,"Andel med højest trivsel Land":86.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":"På niveau"},"2024/2025":{"Elevtal":573.0,"Gns. elevtal Kommune":573.0,"Klassekvotient":27.5,"Klassekvotient Kommune":22.7,"Klassekvotient Land":20.8,"Samlet elevfravær":7.0,"Samlet elevfravær Kommune":8.1,"Samlet elevfravær Land":7.5,"Karaktergennemsnit":8.6,"Karaktergennemsnit Kommune":7.7,"Karaktergennemsnit Land":7.4,"Kompetencedækning":91.2,"Kompetencedækning Kommune":83.1,"Kompetencedækning Land":85.5,"SocRef Forskel":0.3,"SocRef Karaktergennemsnit":8.6,"SocRef Socioøkonomisk reference":8.3,"Andel med højest trivsel":92.4,"Andel med højest trivsel Kommune":88.8,"Andel med højest trivsel Land":87.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":"På niveau"},"2025/2026":{"Elevtal":577.0,"Gns. elevtal Kommune":587.0,"Klassekvotient":27.5,"Klassekvotient Kommune":22.6,"Klassekvotient Land":20.7,"Samlet elevfravær":null,"Samlet elevfravær Kommune":null,"Samlet elevfravær Land":null,"Karaktergennemsnit":8.4,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.3,"Kompetencedækning":85.4,"Kompetencedækning Kommune":84.2,"Kompetencedækning Land":85.8,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":92.4,"Andel med højest trivsel Kommune":89.9,"Andel med højest trivsel Land":88.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":null}},"SIS":{"2018/2019":{"Elevtal":650.0,"Gns. elevtal Kommune":615.0,"Klassekvotient":21.2,"Klassekvotient Kommune":23.3,"Klassekvotient Land":21.3,"Samlet elevfravær":null,"Samlet elevfravær Kommune":null,"Samlet elevfravær Land":null,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.5,"Kompetencedækning":83.3,"Kompetencedækning Kommune":86.8,"Kompetencedækning Land":87.6,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":87.6,"Andel med højest trivsel Kommune":91.0,"Andel med højest trivsel Land":91.5,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":88.4,"Overgang til UU fra 9. og 10. kl. sept året efter Land":86.1,"sig":null},"2019/2020":{"Elevtal":762.0,"Gns. elevtal Kommune":603.0,"Klassekvotient":21.5,"Klassekvotient Kommune":23.3,"Klassekvotient Land":21.2,"Samlet elevfravær":5.3,"Samlet elevfravær Kommune":6.1,"Samlet elevfravær Land":5.3,"Karaktergennemsnit":7.6,"Karaktergennemsnit Kommune":7.6,"Karaktergennemsnit Land":7.5,"Kompetencedækning":84.4,"Kompetencedækning Kommune":86.4,"Kompetencedækning Land":88.4,"SocRef Forskel":-0.1,"SocRef Karaktergennemsnit":7.4,"SocRef Socioøkonomisk reference":7.5,"Andel med højest trivsel":91.4,"Andel med højest trivsel Kommune":91.9,"Andel med højest trivsel Land":91.9,"Overgang til UU fra 9. og 10. kl. sept året efter":84.8,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":88.3,"Overgang til UU fra 9. og 10. kl. sept året efter Land":86.9,"sig":"På niveau"},"2020/2021":{"Elevtal":827.0,"Gns. elevtal Kommune":605.0,"Klassekvotient":22.9,"Klassekvotient Kommune":23.0,"Klassekvotient Land":21.1,"Samlet elevfravær":5.2,"Samlet elevfravær Kommune":5.7,"Samlet elevfravær Land":5.1,"Karaktergennemsnit":7.7,"Karaktergennemsnit Kommune":8.1,"Karaktergennemsnit Land":8.0,"Kompetencedækning":null,"Kompetencedækning Kommune":null,"Kompetencedækning Land":null,"SocRef Forskel":-0.6,"SocRef Karaktergennemsnit":7.4,"SocRef Socioøkonomisk reference":8.0,"Andel med højest trivsel":87.9,"Andel med højest trivsel Kommune":90.6,"Andel med højest trivsel Land":90.9,"Overgang til UU fra 9. og 10. kl. sept året efter":81.1,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":86.6,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.9,"sig":"Under niveau"},"2021/2022":{"Elevtal":850.0,"Gns. elevtal Kommune":582.0,"Klassekvotient":22.8,"Klassekvotient Kommune":22.5,"Klassekvotient Land":21.0,"Samlet elevfravær":9.2,"Samlet elevfravær Kommune":9.0,"Samlet elevfravær Land":8.1,"Karaktergennemsnit":7.7,"Karaktergennemsnit Kommune":8.1,"Karaktergennemsnit Land":7.9,"Kompetencedækning":85.1,"Kompetencedækning Kommune":83.6,"Kompetencedækning Land":86.4,"SocRef Forskel":-0.4,"SocRef Karaktergennemsnit":7.5,"SocRef Socioøkonomisk reference":7.9,"Andel med højest trivsel":85.3,"Andel med højest trivsel Kommune":89.6,"Andel med højest trivsel Land":89.8,"Overgang til UU fra 9. og 10. kl. sept året efter":84.3,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":87.3,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.5,"sig":"På niveau"},"2022/2023":{"Elevtal":856.0,"Gns. elevtal Kommune":598.0,"Klassekvotient":22.1,"Klassekvotient Kommune":22.3,"Klassekvotient Land":20.9,"Samlet elevfravær":7.8,"Samlet elevfravær Kommune":7.6,"Samlet elevfravær Land":7.2,"Karaktergennemsnit":6.9,"Karaktergennemsnit Kommune":7.6,"Karaktergennemsnit Land":7.3,"Kompetencedækning":86.0,"Kompetencedækning Kommune":83.2,"Kompetencedækning Land":86.6,"SocRef Forskel":-0.4,"SocRef Karaktergennemsnit":6.9,"SocRef Socioøkonomisk reference":7.3,"Andel med højest trivsel":88.5,"Andel med højest trivsel Kommune":87.5,"Andel med højest trivsel Land":87.5,"Overgang til UU fra 9. og 10. kl. sept året efter":87.9,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":87.0,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.3,"sig":"På niveau"},"2023/2024":{"Elevtal":835.0,"Gns. elevtal Kommune":584.0,"Klassekvotient":22.3,"Klassekvotient Kommune":22.6,"Klassekvotient Land":20.9,"Samlet elevfravær":7.5,"Samlet elevfravær Kommune":7.6,"Samlet elevfravær Land":7.4,"Karaktergennemsnit":6.9,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.3,"Kompetencedækning":83.0,"Kompetencedækning Kommune":83.5,"Kompetencedækning Land":86.3,"SocRef Forskel":-0.5,"SocRef Karaktergennemsnit":6.9,"SocRef Socioøkonomisk reference":7.4,"Andel med højest trivsel":81.2,"Andel med højest trivsel Kommune":87.0,"Andel med højest trivsel Land":86.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":"På niveau"},"2024/2025":{"Elevtal":810.0,"Gns. elevtal Kommune":573.0,"Klassekvotient":22.8,"Klassekvotient Kommune":22.7,"Klassekvotient Land":20.8,"Samlet elevfravær":7.9,"Samlet elevfravær Kommune":8.1,"Samlet elevfravær Land":7.5,"Karaktergennemsnit":7.3,"Karaktergennemsnit Kommune":7.7,"Karaktergennemsnit Land":7.4,"Kompetencedækning":83.0,"Kompetencedækning Kommune":83.1,"Kompetencedækning Land":85.5,"SocRef Forskel":-0.6,"SocRef Karaktergennemsnit":7.3,"SocRef Socioøkonomisk reference":7.9,"Andel med højest trivsel":90.6,"Andel med højest trivsel Kommune":88.8,"Andel med højest trivsel Land":87.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":"Under niveau"},"2025/2026":{"Elevtal":793.0,"Gns. elevtal Kommune":587.0,"Klassekvotient":21.4,"Klassekvotient Kommune":22.6,"Klassekvotient Land":20.7,"Samlet elevfravær":null,"Samlet elevfravær Kommune":null,"Samlet elevfravær Land":null,"Karaktergennemsnit":7.3,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.3,"Kompetencedækning":84.3,"Kompetencedækning Kommune":84.2,"Kompetencedækning Land":85.8,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":87.6,"Andel med højest trivsel Kommune":89.9,"Andel med højest trivsel Land":88.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":null}},"SLU":{"2018/2019":{"Elevtal":null,"Gns. elevtal Kommune":615.0,"Klassekvotient":null,"Klassekvotient Kommune":23.3,"Klassekvotient Land":21.3,"Samlet elevfravær":null,"Samlet elevfravær Kommune":null,"Samlet elevfravær Land":null,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.5,"Kompetencedækning":null,"Kompetencedækning Kommune":86.8,"Kompetencedækning Land":87.6,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":null,"Andel med højest trivsel Kommune":91.0,"Andel med højest trivsel Land":91.5,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":88.4,"Overgang til UU fra 9. og 10. kl. sept året efter Land":86.1,"sig":null},"2019/2020":{"Elevtal":22.0,"Gns. elevtal Kommune":603.0,"Klassekvotient":20.0,"Klassekvotient Kommune":23.3,"Klassekvotient Land":21.2,"Samlet elevfravær":8.9,"Samlet elevfravær Kommune":6.1,"Samlet elevfravær Land":5.3,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.6,"Karaktergennemsnit Land":7.5,"Kompetencedækning":null,"Kompetencedækning Kommune":86.4,"Kompetencedækning Land":88.4,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":null,"Andel med højest trivsel Kommune":91.9,"Andel med højest trivsel Land":91.9,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":88.3,"Overgang til UU fra 9. og 10. kl. sept året efter Land":86.9,"sig":null},"2020/2021":{"Elevtal":66.0,"Gns. elevtal Kommune":605.0,"Klassekvotient":21.0,"Klassekvotient Kommune":23.0,"Klassekvotient Land":21.1,"Samlet elevfravær":5.0,"Samlet elevfravær Kommune":5.7,"Samlet elevfravær Land":5.1,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":8.1,"Karaktergennemsnit Land":8.0,"Kompetencedækning":null,"Kompetencedækning Kommune":null,"Kompetencedækning Land":null,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":null,"Andel med højest trivsel Kommune":90.6,"Andel med højest trivsel Land":90.9,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":86.6,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.9,"sig":null},"2021/2022":{"Elevtal":115.0,"Gns. elevtal Kommune":582.0,"Klassekvotient":23.0,"Klassekvotient Kommune":22.5,"Klassekvotient Land":21.0,"Samlet elevfravær":6.7,"Samlet elevfravær Kommune":9.0,"Samlet elevfravær Land":8.1,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":8.1,"Karaktergennemsnit Land":7.9,"Kompetencedækning":94.6,"Kompetencedækning Kommune":83.6,"Kompetencedækning Land":86.4,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":null,"Andel med højest trivsel Kommune":89.6,"Andel med højest trivsel Land":89.8,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":87.3,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.5,"sig":null},"2022/2023":{"Elevtal":158.0,"Gns. elevtal Kommune":598.0,"Klassekvotient":22.9,"Klassekvotient Kommune":22.3,"Klassekvotient Land":20.9,"Samlet elevfravær":6.8,"Samlet elevfravær Kommune":7.6,"Samlet elevfravær Land":7.2,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.6,"Karaktergennemsnit Land":7.3,"Kompetencedækning":83.2,"Kompetencedækning Kommune":83.2,"Kompetencedækning Land":86.6,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":null,"Andel med højest trivsel Kommune":87.5,"Andel med højest trivsel Land":87.5,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":87.0,"Overgang til UU fra 9. og 10. kl. sept året efter Land":85.3,"sig":null},"2023/2024":{"Elevtal":229.0,"Gns. elevtal Kommune":584.0,"Klassekvotient":20.0,"Klassekvotient Kommune":22.6,"Klassekvotient Land":20.9,"Samlet elevfravær":6.7,"Samlet elevfravær Kommune":7.6,"Samlet elevfravær Land":7.4,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.3,"Kompetencedækning":58.6,"Kompetencedækning Kommune":83.5,"Kompetencedækning Land":86.3,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":93.1,"Andel med højest trivsel Kommune":87.0,"Andel med højest trivsel Land":86.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":null},"2024/2025":{"Elevtal":331.0,"Gns. elevtal Kommune":573.0,"Klassekvotient":21.3,"Klassekvotient Kommune":22.7,"Klassekvotient Land":20.8,"Samlet elevfravær":7.0,"Samlet elevfravær Kommune":8.1,"Samlet elevfravær Land":7.5,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.7,"Karaktergennemsnit Land":7.4,"Kompetencedækning":78.2,"Kompetencedækning Kommune":83.1,"Kompetencedækning Land":85.5,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":92.7,"Andel med højest trivsel Kommune":88.8,"Andel med højest trivsel Land":87.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":null},"2025/2026":{"Elevtal":407.0,"Gns. elevtal Kommune":587.0,"Klassekvotient":21.6,"Klassekvotient Kommune":22.6,"Klassekvotient Land":20.7,"Samlet elevfravær":null,"Samlet elevfravær Kommune":null,"Samlet elevfravær Land":null,"Karaktergennemsnit":null,"Karaktergennemsnit Kommune":7.5,"Karaktergennemsnit Land":7.3,"Kompetencedækning":69.2,"Kompetencedækning Kommune":84.2,"Kompetencedækning Land":85.8,"SocRef Forskel":null,"SocRef Karaktergennemsnit":null,"SocRef Socioøkonomisk reference":null,"Andel med højest trivsel":95.1,"Andel med højest trivsel Kommune":89.9,"Andel med højest trivsel Land":88.1,"Overgang til UU fra 9. og 10. kl. sept året efter":null,"Overgang til UU fra 9. og 10. kl. sept året efter Kommune":null,"Overgang til UU fra 9. og 10. kl. sept året efter Land":null,"sig":null}}},"trivS":{"SAG":{"2014/2015":{"soc":4.2,"soc_n":408.0,"fag":3.8,"fag_n":407.0,"sto":3.3,"sto_n":408.0,"ro":3.7,"ro_n":408.0,"gen":3.8,"gen_n":408.0},"2015/2016":{"soc":4.3,"soc_n":453.0,"fag":3.9,"fag_n":452.0,"sto":3.3,"sto_n":453.0,"ro":3.7,"ro_n":453.0,"gen":3.9,"gen_n":454.0},"2016/2017":{"soc":4.2,"soc_n":456.0,"fag":3.9,"fag_n":458.0,"sto":3.2,"sto_n":456.0,"ro":3.8,"ro_n":458.0,"gen":3.8,"gen_n":457.0},"2017/2018":{"soc":4.1,"soc_n":454.0,"fag":3.8,"fag_n":454.0,"sto":3.2,"sto_n":452.0,"ro":3.7,"ro_n":452.0,"gen":3.8,"gen_n":452.0},"2018/2019":{"soc":4.1,"soc_n":381.0,"fag":3.8,"fag_n":380.0,"sto":3.2,"sto_n":380.0,"ro":3.8,"ro_n":380.0,"gen":3.8,"gen_n":380.0},"2019/2020":{"soc":4.2,"soc_n":474.0,"fag":3.8,"fag_n":473.0,"sto":3.2,"sto_n":472.0,"ro":3.8,"ro_n":472.0,"gen":3.8,"gen_n":473.0},"2020/2021":{"soc":4.1,"soc_n":473.0,"fag":3.7,"fag_n":472.0,"sto":3.2,"sto_n":471.0,"ro":3.9,"ro_n":472.0,"gen":3.8,"gen_n":472.0},"2021/2022":{"soc":4.0,"soc_n":389.0,"fag":3.7,"fag_n":387.0,"sto":3.1,"sto_n":388.0,"ro":3.8,"ro_n":389.0,"gen":3.7,"gen_n":389.0},"2022/2023":{"soc":4.0,"soc_n":468.0,"fag":3.8,"fag_n":467.0,"sto":3.1,"sto_n":468.0,"ro":3.8,"ro_n":467.0,"gen":3.7,"gen_n":468.0},"2023/2024":{"soc":4.1,"soc_n":418.0,"fag":3.8,"fag_n":418.0,"sto":3.1,"sto_n":418.0,"ro":3.7,"ro_n":418.0,"gen":3.7,"gen_n":418.0},"2024/2025":{"soc":4.1,"soc_n":460.0,"fag":3.7,"fag_n":460.0,"sto":3.1,"sto_n":459.0,"ro":3.7,"ro_n":460.0,"gen":3.7,"gen_n":460.0},"2025/2026":{"soc":4.1,"soc_n":451.0,"fag":3.7,"fag_n":450.0,"sto":3.1,"sto_n":450.0,"ro":3.8,"ro_n":450.0,"gen":3.7,"gen_n":450.0}},"SIS":{"2014/2015":{"soc":4.3,"soc_n":28.0,"fag":3.8,"fag_n":28.0,"sto":3.5,"sto_n":28.0,"ro":3.8,"ro_n":28.0,"gen":3.9,"gen_n":28.0},"2015/2016":{"soc":4.1,"soc_n":52.0,"fag":3.9,"fag_n":52.0,"sto":3.5,"sto_n":52.0,"ro":3.5,"ro_n":52.0,"gen":3.8,"gen_n":52.0},"2016/2017":{"soc":4.1,"soc_n":118.0,"fag":3.7,"fag_n":118.0,"sto":3.3,"sto_n":118.0,"ro":3.7,"ro_n":118.0,"gen":3.8,"gen_n":118.0},"2017/2018":{"soc":4.1,"soc_n":171.0,"fag":3.8,"fag_n":170.0,"sto":3.2,"sto_n":170.0,"ro":3.7,"ro_n":170.0,"gen":3.7,"gen_n":170.0},"2018/2019":{"soc":4.0,"soc_n":234.0,"fag":3.7,"fag_n":234.0,"sto":3.1,"sto_n":231.0,"ro":3.7,"ro_n":233.0,"gen":3.7,"gen_n":233.0},"2019/2020":{"soc":4.0,"soc_n":291.0,"fag":3.7,"fag_n":290.0,"sto":3.2,"sto_n":290.0,"ro":3.8,"ro_n":289.0,"gen":3.7,"gen_n":290.0},"2020/2021":{"soc":3.9,"soc_n":391.0,"fag":3.6,"fag_n":385.0,"sto":3.1,"sto_n":384.0,"ro":3.7,"ro_n":386.0,"gen":3.6,"gen_n":387.0},"2021/2022":{"soc":3.9,"soc_n":407.0,"fag":3.6,"fag_n":406.0,"sto":3.1,"sto_n":405.0,"ro":3.6,"ro_n":407.0,"gen":3.6,"gen_n":407.0},"2022/2023":{"soc":3.8,"soc_n":365.0,"fag":3.6,"fag_n":360.0,"sto":3.1,"sto_n":362.0,"ro":3.7,"ro_n":365.0,"gen":3.6,"gen_n":364.0},"2023/2024":{"soc":3.7,"soc_n":437.0,"fag":3.5,"fag_n":434.0,"sto":2.9,"sto_n":432.0,"ro":3.5,"ro_n":436.0,"gen":3.4,"gen_n":437.0},"2024/2025":{"soc":3.9,"soc_n":448.0,"fag":3.6,"fag_n":444.0,"sto":3.1,"sto_n":441.0,"ro":3.8,"ro_n":446.0,"gen":3.6,"gen_n":445.0},"2025/2026":{"soc":3.9,"soc_n":430.0,"fag":3.6,"fag_n":424.0,"sto":3.1,"sto_n":432.0,"ro":3.8,"ro_n":428.0,"gen":3.6,"gen_n":429.0}},"SLU":{"2023/2024":{"soc":3.9,"soc_n":29.0,"fag":3.7,"fag_n":29.0,"sto":3.7,"sto_n":28.0,"ro":3.8,"ro_n":29.0,"gen":3.8,"gen_n":29.0},"2024/2025":{"soc":4.1,"soc_n":82.0,"fag":3.9,"fag_n":82.0,"sto":3.6,"sto_n":82.0,"ro":4.1,"ro_n":82.0,"gen":3.9,"gen_n":82.0},"2025/2026":{"soc":4.3,"soc_n":123.0,"fag":3.9,"fag_n":122.0,"sto":3.6,"sto_n":122.0,"ro":4.1,"ro_n":123.0,"gen":4.0,"gen_n":123.0}}},"trivKK":{"2014/2015":{"soc":4.0,"soc_land":4.1,"fag":3.7,"fag_land":3.7,"sto":3.3,"sto_land":3.3,"ro":3.7,"ro_land":3.7,"gen":3.7,"gen_land":3.7},"2015/2016":{"soc":4.1,"soc_land":4.1,"fag":3.8,"fag_land":3.8,"sto":3.3,"sto_land":3.3,"ro":3.7,"ro_land":3.8,"gen":3.8,"gen_land":3.8},"2016/2017":{"soc":4.1,"soc_land":4.1,"fag":3.8,"fag_land":3.7,"sto":3.3,"sto_land":3.3,"ro":3.7,"ro_land":3.8,"gen":3.7,"gen_land":3.8},"2017/2018":{"soc":4.1,"soc_land":4.1,"fag":3.7,"fag_land":3.7,"sto":3.2,"sto_land":3.2,"ro":3.7,"ro_land":3.8,"gen":3.7,"gen_land":3.7},"2018/2019":{"soc":4.0,"soc_land":4.1,"fag":3.7,"fag_land":3.7,"sto":3.2,"sto_land":3.2,"ro":3.7,"ro_land":3.7,"gen":3.7,"gen_land":3.7},"2019/2020":{"soc":4.1,"soc_land":4.1,"fag":3.7,"fag_land":3.7,"sto":3.2,"sto_land":3.2,"ro":3.8,"ro_land":3.8,"gen":3.7,"gen_land":3.7},"2020/2021":{"soc":4.0,"soc_land":4.0,"fag":3.7,"fag_land":3.6,"sto":3.2,"sto_land":3.2,"ro":3.8,"ro_land":3.8,"gen":3.7,"gen_land":3.7},"2021/2022":{"soc":4.0,"soc_land":4.0,"fag":3.7,"fag_land":3.6,"sto":3.1,"sto_land":3.2,"ro":3.7,"ro_land":3.8,"gen":3.6,"gen_land":3.7},"2022/2023":{"soc":3.9,"soc_land":3.9,"fag":3.6,"fag_land":3.6,"sto":3.1,"sto_land":3.1,"ro":3.7,"ro_land":3.7,"gen":3.6,"gen_land":3.6},"2023/2024":{"soc":3.9,"soc_land":3.9,"fag":3.6,"fag_land":3.6,"sto":3.0,"sto_land":3.0,"ro":3.6,"ro_land":3.7,"gen":3.6,"gen_land":3.6},"2024/2025":{"soc":3.9,"soc_land":3.9,"fag":3.6,"fag_land":3.6,"sto":3.1,"sto_land":3.1,"ro":3.7,"ro_land":3.7,"gen":3.6,"gen_land":3.6},"2025/2026":{"soc":4.0,"soc_land":4.0,"fag":3.7,"fag_land":3.6,"sto":3.1,"sto_land":3.1,"ro":3.7,"ro_land":3.7,"gen":3.7,"gen_land":3.6}},"trivG":{"SAG":{"2014/2015":{"4":{"soc":4.3,"n":77.0,"fag":3.9,"sto":3.6,"ro":3.7,"gen":3.9},"5":{"soc":4.3,"n":48.0,"fag":3.9,"sto":3.4,"ro":3.7,"gen":3.9},"6":{"soc":4.1,"n":73.0,"fag":3.9,"sto":3.0,"ro":3.4,"gen":3.7},"7":{"soc":4.3,"n":77.0,"fag":3.9,"sto":3.4,"ro":4.0,"gen":4.0},"8":{"soc":4.2,"n":76.0,"fag":3.8,"sto":3.4,"ro":3.7,"gen":3.8},"9":{"soc":4.3,"n":57.0,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.7}},"2015/2016":{"4":{"soc":4.3,"n":82.0,"fag":4.0,"sto":3.6,"ro":3.6,"gen":3.9},"5":{"soc":4.3,"n":70.0,"fag":3.9,"sto":3.4,"ro":3.6,"gen":3.9},"6":{"soc":4.4,"n":81.0,"fag":3.9,"sto":3.2,"ro":3.6,"gen":3.9},"7":{"soc":4.1,"n":76.0,"fag":3.8,"sto":3.1,"ro":3.6,"gen":3.7},"8":{"soc":4.3,"n":77.0,"fag":3.9,"sto":3.2,"ro":3.9,"gen":3.9},"9":{"soc":4.3,"n":68.0,"fag":3.9,"sto":3.2,"ro":3.8,"gen":3.9}},"2016/2017":{"4":{"soc":4.2,"n":79.0,"fag":3.9,"sto":3.3,"ro":3.6,"gen":3.8},"5":{"soc":4.3,"n":79.0,"fag":4.0,"sto":3.3,"ro":3.8,"gen":3.9},"6":{"soc":4.1,"n":81.0,"fag":3.8,"sto":3.1,"ro":3.7,"gen":3.7},"7":{"soc":4.3,"n":78.0,"fag":3.9,"sto":3.4,"ro":4.0,"gen":3.9},"8":{"soc":4.0,"n":69.0,"fag":3.8,"sto":3.1,"ro":3.8,"gen":3.7},"9":{"soc":4.3,"n":71.0,"fag":4.0,"sto":3.2,"ro":4.0,"gen":3.9}},"2017/2018":{"4":{"soc":4.0,"n":84.0,"fag":3.8,"sto":3.3,"ro":3.4,"gen":3.7},"5":{"soc":4.2,"n":80.0,"fag":3.8,"sto":3.2,"ro":3.6,"gen":3.8},"6":{"soc":4.2,"n":76.0,"fag":3.9,"sto":3.2,"ro":3.8,"gen":3.8},"7":{"soc":4.2,"n":77.0,"fag":3.9,"sto":3.3,"ro":3.9,"gen":3.9},"8":{"soc":4.1,"n":67.0,"fag":3.8,"sto":3.2,"ro":3.9,"gen":3.8},"9":{"soc":4.2,"n":68.0,"fag":3.8,"sto":3.2,"ro":3.7,"gen":3.8}},"2018/2019":{"4":{"soc":4.1,"n":68.0,"fag":3.9,"sto":3.4,"ro":3.7,"gen":3.8},"5":{"soc":4.0,"n":82.0,"fag":3.8,"sto":3.0,"ro":3.6,"gen":3.7},"6":{"soc":4.1,"n":81.0,"fag":3.8,"sto":3.1,"ro":3.7,"gen":3.7},"7":{"soc":4.2,"n":70.0,"fag":3.8,"sto":3.1,"ro":3.8,"gen":3.8},"8":{"soc":4.2,"n":79.0,"fag":3.9,"sto":3.2,"ro":4.1,"gen":3.9}},"2019/2020":{"4":{"soc":4.5,"n":78.0,"fag":3.8,"sto":3.7,"ro":3.8,"gen":4.0},"5":{"soc":4.2,"n":81.0,"fag":3.9,"sto":3.4,"ro":3.8,"gen":3.9},"6":{"soc":4.0,"n":82.0,"fag":3.7,"sto":2.9,"ro":3.5,"gen":3.6},"7":{"soc":4.1,"n":82.0,"fag":3.7,"sto":3.2,"ro":3.9,"gen":3.7},"8":{"soc":4.3,"n":74.0,"fag":3.7,"sto":3.2,"ro":3.9,"gen":3.8},"9":{"soc":4.2,"n":76.0,"fag":3.9,"sto":3.1,"ro":4.0,"gen":3.9}},"2020/2021":{"4":{"soc":4.1,"n":81.0,"fag":3.8,"sto":3.4,"ro":3.9,"gen":3.8},"5":{"soc":4.3,"n":83.0,"fag":3.7,"sto":3.5,"ro":4.0,"gen":3.9},"6":{"soc":4.1,"n":80.0,"fag":3.8,"sto":3.2,"ro":3.8,"gen":3.7},"7":{"soc":4.1,"n":77.0,"fag":3.7,"sto":3.2,"ro":4.0,"gen":3.8},"8":{"soc":4.1,"n":79.0,"fag":3.6,"sto":2.9,"ro":3.8,"gen":3.6},"9":{"soc":4.1,"n":72.0,"fag":3.8,"sto":3.1,"ro":4.1,"gen":3.8}},"2021/2022":{"4":{"soc":4.0,"n":81.0,"fag":3.6,"sto":3.1,"ro":3.5,"gen":3.6},"5":{"soc":4.1,"n":73.0,"fag":3.8,"sto":3.3,"ro":3.9,"gen":3.8},"6":{"soc":4.0,"n":20.0,"fag":3.5,"sto":3.1,"ro":3.6,"gen":3.6},"7":{"soc":4.0,"n":70.0,"fag":3.7,"sto":3.0,"ro":3.8,"gen":3.7},"8":{"soc":3.9,"n":78.0,"fag":3.6,"sto":3.1,"ro":3.9,"gen":3.7},"9":{"soc":4.0,"n":67.0,"fag":3.6,"sto":2.9,"ro":3.8,"gen":3.6}},"2022/2023":{"4":{"soc":4.1,"n":78.0,"fag":3.9,"sto":3.3,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"n":81.0,"fag":3.8,"sto":3.2,"ro":3.5,"gen":3.7},"6":{"soc":4.1,"n":81.0,"fag":3.8,"sto":3.1,"ro":3.9,"gen":3.7},"7":{"soc":3.9,"n":76.0,"fag":3.7,"sto":3.1,"ro":3.6,"gen":3.6},"8":{"soc":3.9,"n":74.0,"fag":3.8,"sto":3.0,"ro":3.8,"gen":3.6},"9":{"soc":4.1,"n":78.0,"fag":3.8,"sto":3.1,"ro":4.1,"gen":3.8}},"2023/2024":{"4":{"soc":4.1,"n":80.0,"fag":3.8,"sto":3.4,"ro":3.6,"gen":3.8},"5":{"soc":4.1,"n":79.0,"fag":3.9,"sto":3.2,"ro":3.4,"gen":3.7},"6":{"soc":4.2,"n":50.0,"fag":3.8,"sto":3.2,"ro":3.8,"gen":3.8},"7":{"soc":4.1,"n":76.0,"fag":3.8,"sto":3.1,"ro":4.0,"gen":3.8},"8":{"soc":4.0,"n":70.0,"fag":3.6,"sto":2.9,"ro":3.7,"gen":3.6},"9":{"soc":4.1,"n":63.0,"fag":3.8,"sto":3.0,"ro":3.8,"gen":3.7}},"2024/2025":{"4":{"soc":4.2,"n":82.0,"fag":3.8,"sto":3.5,"ro":3.7,"gen":3.9},"5":{"soc":3.9,"n":81.0,"fag":3.6,"sto":3.1,"ro":3.6,"gen":3.6},"6":{"soc":4.0,"n":79.0,"fag":3.7,"sto":3.1,"ro":3.5,"gen":3.6},"7":{"soc":4.2,"n":73.0,"fag":3.7,"sto":3.0,"ro":3.6,"gen":3.7},"8":{"soc":4.1,"n":79.0,"fag":3.6,"sto":3.0,"ro":4.1,"gen":3.7},"9":{"soc":4.1,"n":66.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7}},"2025/2026":{"4":{"soc":4.2,"n":77.0,"fag":3.7,"sto":3.2,"ro":3.5,"gen":3.7},"5":{"soc":4.3,"n":82.0,"fag":4.0,"sto":3.5,"ro":3.9,"gen":3.9},"6":{"soc":3.9,"n":75.0,"fag":3.7,"sto":2.9,"ro":3.7,"gen":3.6},"7":{"soc":4.0,"n":65.0,"fag":3.6,"sto":2.9,"ro":3.5,"gen":3.5},"8":{"soc":4.3,"n":78.0,"fag":3.7,"sto":3.0,"ro":3.8,"gen":3.8},"9":{"soc":4.2,"n":73.0,"fag":3.7,"sto":3.1,"ro":4.0,"gen":3.8}}},"SIS":{"2014/2015":{"4":{"soc":4.3,"n":28.0,"fag":3.8,"sto":3.5,"ro":3.8,"gen":3.9}},"2015/2016":{"4":{"soc":4.3,"n":22.0,"fag":4.0,"sto":3.8,"ro":3.7,"gen":4.0},"5":{"soc":4.1,"n":30.0,"fag":3.9,"sto":3.3,"ro":3.4,"gen":3.7}},"2016/2017":{"4":{"soc":4.3,"n":50.0,"fag":3.8,"sto":3.5,"ro":3.7,"gen":3.9},"5":{"soc":4.1,"n":27.0,"fag":3.8,"sto":3.5,"ro":3.9,"gen":3.8},"6":{"soc":3.9,"n":41.0,"fag":3.7,"sto":2.9,"ro":3.7,"gen":3.6}},"2017/2018":{"4":{"soc":4.2,"n":70.0,"fag":3.9,"sto":3.4,"ro":3.8,"gen":3.9},"5":{"soc":4.0,"n":47.0,"fag":3.7,"sto":3.3,"ro":3.9,"gen":3.7},"6":{"soc":4.1,"n":22.0,"fag":3.9,"sto":3.4,"ro":3.9,"gen":3.8},"7":{"soc":3.8,"n":31.0,"fag":3.5,"sto":2.6,"ro":3.2,"gen":3.3}},"2018/2019":{"4":{"soc":4.1,"n":57.0,"fag":3.7,"sto":3.4,"ro":3.7,"gen":3.7},"5":{"soc":4.2,"n":66.0,"fag":3.9,"sto":3.2,"ro":4.0,"gen":3.8},"6":{"soc":4.0,"n":52.0,"fag":3.6,"sto":3.0,"ro":3.8,"gen":3.6},"7":{"soc":3.9,"n":32.0,"fag":3.6,"sto":2.7,"ro":3.1,"gen":3.4},"8":{"soc":3.7,"n":26.0,"fag":3.7,"sto":3.0,"ro":3.6,"gen":3.5}},"2019/2020":{"4":{"soc":4.0,"n":94.0,"fag":3.8,"sto":3.2,"ro":3.7,"gen":3.7},"5":{"soc":4.0,"n":63.0,"fag":3.7,"sto":3.2,"ro":3.5,"gen":3.7},"6":{"soc":4.0,"n":73.0,"fag":3.8,"sto":3.2,"ro":4.0,"gen":3.7},"7":{"soc":4.0,"n":46.0,"fag":3.6,"sto":3.1,"ro":3.8,"gen":3.6},"9":{"soc":3.7,"n":14.0,"fag":3.8,"sto":2.9,"ro":3.9,"gen":3.6}},"2020/2021":{"4":{"soc":4.0,"n":90.0,"fag":3.7,"sto":3.4,"ro":3.6,"gen":3.7},"5":{"soc":4.0,"n":98.0,"fag":3.6,"sto":2.9,"ro":3.6,"gen":3.6},"6":{"soc":3.9,"n":61.0,"fag":3.5,"sto":3.2,"ro":3.7,"gen":3.6},"7":{"soc":3.8,"n":64.0,"fag":3.6,"sto":2.9,"ro":3.8,"gen":3.5},"8":{"soc":3.9,"n":45.0,"fag":3.6,"sto":3.2,"ro":4.1,"gen":3.7},"9":{"soc":4.0,"n":29.0,"fag":3.8,"sto":3.3,"ro":4.0,"gen":3.8}},"2021/2022":{"4":{"soc":4.0,"n":82.0,"fag":3.8,"sto":3.5,"ro":3.7,"gen":3.8},"5":{"soc":4.0,"n":90.0,"fag":3.8,"sto":3.3,"ro":3.7,"gen":3.7},"6":{"soc":3.8,"n":96.0,"fag":3.5,"sto":2.8,"ro":3.6,"gen":3.4},"7":{"soc":3.7,"n":37.0,"fag":3.5,"sto":2.8,"ro":3.4,"gen":3.4},"8":{"soc":3.8,"n":62.0,"fag":3.5,"sto":2.8,"ro":3.7,"gen":3.5},"9":{"soc":3.9,"n":40.0,"fag":3.6,"sto":3.2,"ro":3.9,"gen":3.6}},"2022/2023":{"4":{"soc":3.9,"n":74.0,"fag":3.5,"sto":3.2,"ro":3.6,"gen":3.6},"5":{"soc":4.0,"n":74.0,"fag":3.6,"sto":3.2,"ro":3.7,"gen":3.7},"6":{"soc":3.4,"n":49.0,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.4},"7":{"soc":3.7,"n":76.0,"fag":3.5,"sto":2.8,"ro":3.7,"gen":3.4},"8":{"soc":3.9,"n":45.0,"fag":3.5,"sto":3.3,"ro":3.9,"gen":3.6},"9":{"soc":3.9,"n":46.0,"fag":3.8,"sto":2.9,"ro":3.7,"gen":3.6}},"2023/2024":{"4":{"soc":3.6,"n":78.0,"fag":3.5,"sto":3.0,"ro":3.4,"gen":3.4},"5":{"soc":3.6,"n":88.0,"fag":3.5,"sto":2.7,"ro":3.3,"gen":3.3},"6":{"soc":4.0,"n":69.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.6},"7":{"soc":3.6,"n":86.0,"fag":3.4,"sto":2.8,"ro":3.5,"gen":3.3},"8":{"soc":3.9,"n":81.0,"fag":3.5,"sto":2.6,"ro":3.5,"gen":3.4},"9":{"soc":4.0,"n":35.0,"fag":3.8,"sto":3.3,"ro":3.9,"gen":3.7}},"2024/2025":{"4":{"soc":4.1,"n":73.0,"fag":3.7,"sto":3.3,"ro":3.7,"gen":3.8},"5":{"soc":3.8,"n":76.0,"fag":3.6,"sto":3.1,"ro":3.5,"gen":3.5},"6":{"soc":3.8,"n":88.0,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.5},"7":{"soc":4.0,"n":61.0,"fag":3.7,"sto":3.3,"ro":4.0,"gen":3.8},"8":{"soc":3.9,"n":76.0,"fag":3.5,"sto":2.9,"ro":3.8,"gen":3.5},"9":{"soc":4.0,"n":71.0,"fag":3.8,"sto":3.0,"ro":3.9,"gen":3.7}},"2025/2026":{"4":{"soc":4.1,"n":84.0,"fag":3.7,"sto":3.2,"ro":3.7,"gen":3.7},"5":{"soc":3.9,"n":71.0,"fag":3.8,"sto":3.1,"ro":3.8,"gen":3.7},"6":{"soc":3.6,"n":72.0,"fag":3.5,"sto":2.9,"ro":3.6,"gen":3.4},"7":{"soc":3.8,"n":73.0,"fag":3.6,"sto":3.0,"ro":3.6,"gen":3.5},"8":{"soc":4.0,"n":58.0,"fag":3.6,"sto":3.2,"ro":3.9,"gen":3.7},"9":{"soc":4.0,"n":71.0,"fag":3.6,"sto":3.0,"ro":4.0,"gen":3.6}}},"SLU":{"2023/2024":{"4":{"soc":3.9,"n":29.0,"fag":3.7,"sto":3.7,"ro":3.8,"gen":3.8}},"2024/2025":{"4":{"soc":4.4,"n":46.0,"fag":4.0,"sto":3.6,"ro":4.2,"gen":4.1},"5":{"soc":3.8,"n":36.0,"fag":3.8,"sto":3.7,"ro":4.0,"gen":3.8}},"2025/2026":{"4":{"soc":4.3,"n":44.0,"fag":3.9,"sto":3.6,"ro":4.0,"gen":4.0},"5":{"soc":4.5,"n":44.0,"fag":4.0,"sto":3.5,"ro":4.1,"gen":4.1},"6":{"soc":4.0,"n":35.0,"fag":3.9,"sto":3.7,"ro":4.4,"gen":4.0}}}},"trivGK":{"2014/2015":{"4":{"soc":4.0,"fag":3.8,"sto":3.5,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"fag":3.8,"sto":3.3,"ro":3.6,"gen":3.8},"6":{"soc":4.0,"fag":3.7,"sto":3.3,"ro":3.6,"gen":3.7},"7":{"soc":4.0,"fag":3.7,"sto":3.2,"ro":3.6,"gen":3.7},"8":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.7},"9":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.7}},"2015/2016":{"4":{"soc":4.1,"fag":3.8,"sto":3.5,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"fag":3.8,"sto":3.4,"ro":3.7,"gen":3.8},"6":{"soc":4.1,"fag":3.8,"sto":3.2,"ro":3.7,"gen":3.7},"7":{"soc":4.1,"fag":3.7,"sto":3.2,"ro":3.7,"gen":3.7},"8":{"soc":4.1,"fag":3.7,"sto":3.2,"ro":3.8,"gen":3.7},"9":{"soc":4.1,"fag":3.8,"sto":3.2,"ro":3.8,"gen":3.7}},"2016/2017":{"4":{"soc":4.1,"fag":3.8,"sto":3.4,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"fag":3.8,"sto":3.4,"ro":3.7,"gen":3.8},"6":{"soc":4.1,"fag":3.8,"sto":3.2,"ro":3.7,"gen":3.8},"7":{"soc":4.0,"fag":3.7,"sto":3.2,"ro":3.7,"gen":3.7},"8":{"soc":4.0,"fag":3.7,"sto":3.2,"ro":3.8,"gen":3.7},"9":{"soc":4.1,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7}},"2017/2018":{"4":{"soc":4.1,"fag":3.8,"sto":3.4,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"fag":3.8,"sto":3.3,"ro":3.7,"gen":3.8},"6":{"soc":4.1,"fag":3.8,"sto":3.2,"ro":3.8,"gen":3.7},"7":{"soc":4.1,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.7},"8":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7},"9":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7}},"2018/2019":{"4":{"soc":4.1,"fag":3.7,"sto":3.4,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"fag":3.8,"sto":3.2,"ro":3.7,"gen":3.7},"6":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.7},"7":{"soc":4.0,"fag":3.7,"sto":3.0,"ro":3.7,"gen":3.6},"8":{"soc":4.0,"fag":3.7,"sto":3.0,"ro":3.8,"gen":3.7}},"2019/2020":{"4":{"soc":4.1,"fag":3.7,"sto":3.4,"ro":3.7,"gen":3.8},"5":{"soc":4.1,"fag":3.8,"sto":3.3,"ro":3.8,"gen":3.8},"6":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.7},"7":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7},"8":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7},"9":{"soc":4.1,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7}},"2020/2021":{"4":{"soc":4.0,"fag":3.7,"sto":3.3,"ro":3.7,"gen":3.7},"5":{"soc":4.1,"fag":3.7,"sto":3.3,"ro":3.8,"gen":3.7},"6":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.6},"7":{"soc":4.0,"fag":3.6,"sto":3.1,"ro":3.8,"gen":3.6},"8":{"soc":4.0,"fag":3.6,"sto":3.0,"ro":3.9,"gen":3.6},"9":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.9,"gen":3.7}},"2021/2022":{"4":{"soc":4.0,"fag":3.7,"sto":3.3,"ro":3.7,"gen":3.7},"5":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.7},"6":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.8,"gen":3.7},"7":{"soc":3.9,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.6},"8":{"soc":4.0,"fag":3.6,"sto":3.0,"ro":3.8,"gen":3.6},"9":{"soc":3.9,"fag":3.7,"sto":3.0,"ro":3.8,"gen":3.6}},"2022/2023":{"4":{"soc":4.0,"fag":3.7,"sto":3.3,"ro":3.7,"gen":3.7},"5":{"soc":3.9,"fag":3.7,"sto":3.1,"ro":3.6,"gen":3.6},"6":{"soc":3.9,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.6},"7":{"soc":3.9,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.5},"8":{"soc":3.9,"fag":3.6,"sto":2.9,"ro":3.7,"gen":3.5},"9":{"soc":3.9,"fag":3.7,"sto":3.0,"ro":3.8,"gen":3.6}},"2023/2024":{"4":{"soc":4.0,"fag":3.7,"sto":3.3,"ro":3.6,"gen":3.7},"5":{"soc":3.9,"fag":3.7,"sto":3.1,"ro":3.6,"gen":3.6},"6":{"soc":3.9,"fag":3.6,"sto":3.0,"ro":3.6,"gen":3.6},"7":{"soc":3.8,"fag":3.5,"sto":2.9,"ro":3.6,"gen":3.5},"8":{"soc":3.9,"fag":3.6,"sto":2.9,"ro":3.7,"gen":3.5},"9":{"soc":3.9,"fag":3.7,"sto":3.0,"ro":3.7,"gen":3.6}},"2024/2025":{"4":{"soc":4.0,"fag":3.7,"sto":3.3,"ro":3.7,"gen":3.7},"5":{"soc":4.0,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.6},"6":{"soc":3.9,"fag":3.6,"sto":3.1,"ro":3.7,"gen":3.6},"7":{"soc":3.9,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.6},"8":{"soc":3.9,"fag":3.5,"sto":2.9,"ro":3.7,"gen":3.5},"9":{"soc":3.9,"fag":3.6,"sto":3.0,"ro":3.8,"gen":3.6}},"2025/2026":{"4":{"soc":4.1,"fag":3.7,"sto":3.4,"ro":3.7,"gen":3.8},"5":{"soc":4.0,"fag":3.7,"sto":3.2,"ro":3.7,"gen":3.7},"6":{"soc":3.9,"fag":3.7,"sto":3.1,"ro":3.7,"gen":3.6},"7":{"soc":4.0,"fag":3.6,"sto":3.0,"ro":3.7,"gen":3.6},"8":{"soc":4.0,"fag":3.6,"sto":3.0,"ro":3.8,"gen":3.6},"9":{"soc":4.0,"fag":3.6,"sto":3.0,"ro":3.8,"gen":3.6}}},"frav":{"SAG":{"2019/2020":{"tot":4.7,"kk":6.2,"syg":3.1,"lov":1.2,"ulov":0.4,"o10":7.3},"2020/2021":{"tot":4.3,"kk":5.8,"syg":3.4,"lov":0.8,"ulov":0.2,"o10":8.1},"2021/2022":{"tot":8.6,"kk":9.1,"syg":7.3,"lov":1.0,"ulov":0.3,"o10":25.7},"2022/2023":{"tot":6.8,"kk":7.7,"syg":5.4,"lov":1.1,"ulov":0.4,"o10":16.6},"2023/2024":{"tot":6.7,"kk":7.7,"syg":5.0,"lov":1.3,"ulov":0.4,"o10":16.2},"2024/2025":{"tot":7.0,"kk":8.1,"syg":5.1,"lov":1.3,"ulov":0.6,"o10":19.6}},"SIS":{"2019/2020":{"tot":5.3,"kk":6.2,"syg":2.8,"lov":1.8,"ulov":0.7,"o10":12.5},"2020/2021":{"tot":5.2,"kk":5.8,"syg":2.8,"lov":1.4,"ulov":1.0,"o10":14.2},"2021/2022":{"tot":9.2,"kk":9.1,"syg":5.3,"lov":2.5,"ulov":1.4,"o10":32.2},"2022/2023":{"tot":7.8,"kk":7.7,"syg":4.4,"lov":2.3,"ulov":1.1,"o10":22.8},"2023/2024":{"tot":7.5,"kk":7.7,"syg":3.8,"lov":2.4,"ulov":1.3,"o10":21.9},"2024/2025":{"tot":7.9,"kk":8.1,"syg":4.1,"lov":2.2,"ulov":1.6,"o10":25.1}},"SLU":{"2019/2020":{"tot":8.9,"kk":6.2,"syg":2.7,"lov":6.1,"ulov":0.2,"o10":33.3},"2020/2021":{"tot":5.0,"kk":5.8,"syg":3.1,"lov":1.7,"ulov":0.2,"o10":12.3},"2021/2022":{"tot":6.7,"kk":9.1,"syg":3.5,"lov":3.1,"ulov":0.1,"o10":17.6},"2022/2023":{"tot":6.8,"kk":7.7,"syg":3.6,"lov":2.8,"ulov":0.4,"o10":18.8},"2023/2024":{"tot":6.7,"kk":7.7,"syg":2.9,"lov":3.3,"ulov":0.4,"o10":17.6},"2024/2025":{"tot":7.0,"kk":8.1,"syg":3.8,"lov":2.7,"ulov":0.4,"o10":21.4}}},"kdm":{"SAG":{"2010/2011":{"da":7.4,"ma":7.9,"min2":95.0,"n":80.0},"2011/2012":{"da":8.4,"ma":8.0,"min2":97.4,"n":78.0},"2012/2013":{"da":8.3,"ma":8.5,"min2":97.5,"n":81.0},"2013/2014":{"da":7.9,"ma":7.4,"min2":90.2,"n":82.0},"2014/2015":{"da":8.4,"ma":7.9,"min2":98.7,"n":77.0},"2015/2016":{"da":8.7,"ma":8.3,"min2":97.4,"n":76.0},"2016/2017":{"da":8.1,"ma":8.1,"min2":100.0,"n":80.0},"2017/2018":{"da":8.4,"ma":8.2,"min2":98.7,"n":78.0},"2018/2019":{"da":9.6,"ma":8.1,"min2":98.8,"n":81.0},"2019/2020":{"da":8.8,"ma":8.0,"min2":100.0,"n":79.0},"2020/2021":{"da":8.8,"ma":9.0,"min2":100.0,"n":75.0},"2021/2022":{"da":9.9,"ma":8.4,"min2":98.7,"n":76.0},"2022/2023":{"da":8.3,"ma":8.5,"min2":100.0,"n":78.0},"2023/2024":{"da":8.8,"ma":7.8,"min2":96.1,"n":77.0},"2024/2025":{"da":8.6,"ma":7.3,"min2":100.0,"n":80.0},"2025/2026":{"da":8.7,"ma":8.0,"min2":100.0,"n":83.0}},"SIS":{"2019/2020":{"da":7.3,"ma":7.6,"min2":96.9,"n":32.0},"2020/2021":{"da":7.2,"ma":7.7,"min2":91.9,"n":37.0},"2021/2022":{"da":7.8,"ma":7.6,"min2":100.0,"n":51.0},"2022/2023":{"da":6.9,"ma":6.0,"min2":83.3,"n":66.0},"2023/2024":{"da":7.0,"ma":5.6,"min2":85.2,"n":61.0},"2024/2025":{"da":7.0,"ma":6.7,"min2":95.0,"n":100.0},"2025/2026":{"da":6.8,"ma":6.3,"min2":87.4,"n":87.0}}}};
+const SCH=[
+  {id:'SIS',name:'Skolen i Sydhavnen',short:'Sydhavnen',v:'--s1',cls:'s1'},
+  {id:'SLU',name:'Sluseholmen Skole',short:'Sluseholmen',v:'--s2',cls:'s2'},
+  {id:'SAG',name:'Sankt Annæ',short:'Sankt Annæ',v:'--s3',cls:'s3'}
+];
+const IND=[['gen','Общий'],['soc','Социальный'],['fag','Учебный'],['sto','Поддержка и вдохновение'],['ro','Спокойствие и порядок']];
+const IND_DA={gen:'Generel trivsel',soc:'Social trivsel',fag:'Faglig trivsel',sto:'Støtte og inspiration',ro:'Ro og orden'};
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt=(x,d=1)=>x==null?'—':x.toFixed(d).replace('.',',');
+const fmtP=(x,d=1)=>x==null?'—':fmt(x,d)+' %';
+const fmtS=(x,d=1)=>x==null?'—':(x>0?'+':x<0?'−':'')+fmt(Math.abs(x),d);
+const yrs=(a,b)=>{const o=[];for(let y=a;y<=b;y++)o.push(y+'/'+(y+1));return o};
+const ylab=y=>y.slice(2,4)+'/'+y.slice(7,9);
+const OV=(s,y,k)=>(((D.over[s]||{})[y])||{})[k] ?? null;
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+// ---------- line chart ----------
+function lineChart(el,{years,series,ref,fmtV=fmt,domain,zero=false,h=240,refLabel='Копенгаген'}){
+  el.innerHTML='';
+  const W=520,H=h,m={l:40,r:14,t:12,b:26};
+  const iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const all=[...series.flatMap(s=>s.vals),...(ref?ref.vals:[])].filter(v=>v!=null);
+  let lo=domain?domain[0]:Math.min(...all),hi=domain?domain[1]:Math.max(...all);
+  if(!domain){const pad=(hi-lo)*0.15||0.2;const lo0=lo;lo-=pad;hi+=pad;if(zero)lo=lo0>=0?0:Math.min(lo,0)}
+  const step=niceStep((hi-lo)/4);lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
+  const x=i=>m.l+(years.length===1?iw/2:i*iw/(years.length-1));
+  const y=v=>m.t+ih-(v-lo)/(hi-lo)*ih;
+  const ns='http://www.w3.org/2000/svg';
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  const dec=step<0.1?2:step<1?1:0;
+  for(let t=lo;t<=hi+1e-9;t+=step){s+=`<line class="grid" x1="${m.l}" x2="${W-m.r}" y1="${y(t)}" y2="${y(t)}"/><text x="${m.l-6}" y="${y(t)+3.5}" text-anchor="end">${fmt(t,dec)}</text>`}
+  if(lo<0&&hi>0)s+=`<line class="axis" x1="${m.l}" x2="${W-m.r}" y1="${y(0)}" y2="${y(0)}"/>`;
+  const every=Math.ceil(years.length/8);
+  years.forEach((yr,i)=>{if(i%every===0||i===years.length-1)s+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${ylab(yr)}</text>`});
+  const path=(vals)=>{let d='',pen=false;vals.forEach((v,i)=>{if(v==null){pen=false;return}d+=(pen?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);pen=true});return d};
+  if(ref)s+=`<path d="${path(ref.vals)}" fill="none" stroke="var(--ref)" stroke-width="2" stroke-dasharray="5 4"/>`;
+  series.forEach(se=>{
+    s+=`<path d="${path(se.vals)}" fill="none" stroke="var(${se.v})" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    se.vals.forEach((v,i)=>{if(v==null)return;const iso=(se.vals[i-1]==null&&se.vals[i+1]==null);const last=i===se.vals.length-1||se.vals.slice(i+1).every(z=>z==null);if(iso||last)s+=`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="var(${se.v})" stroke="var(--surface)" stroke-width="2"/>`});
+  });
+  s+=`<line class="xh" id="xh" x1="0" x2="0" y1="${m.t}" y2="${m.t+ih}" visibility="hidden"/><g id="dots"></g><rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent" id="hit"/></svg>`;
+  el.innerHTML=s;
+  const tip=document.createElement('div');tip.className='tip';tip.hidden=true;el.appendChild(tip);
+  const svg=el.querySelector('svg'),xh=svg.querySelector('#xh'),dots=svg.querySelector('#dots');
+  const show=(i)=>{
+    xh.setAttribute('x1',x(i));xh.setAttribute('x2',x(i));xh.setAttribute('visibility','visible');
+    let dd='';series.forEach(se=>{const v=se.vals[i];if(v!=null)dd+=`<circle cx="${x(i)}" cy="${y(v)}" r="4.5" fill="var(${se.v})" stroke="var(--surface)" stroke-width="2"/>`});dots.innerHTML=dd;
+    let h=`<div class="t">${years[i]}</div>`;
+    series.forEach(se=>{h+=`<div class="r"><span><i class="sw ${se.cls}"></i>${se.short}</span><span class="v">${fmtV(se.vals[i])}</span></div>`});
+    if(ref)h+=`<div class="r"><span><i class="sw ref"></i>${refLabel}</span><span class="v">${fmtV(ref.vals[i])}</span></div>`;
+    tip.innerHTML=h;tip.hidden=false;
+    const r=svg.getBoundingClientRect(),sc=r.width/W;let px=x(i)*sc+12;if(px+170>r.width)px=x(i)*sc-172;
+    tip.style.left=Math.max(0,px)+'px';tip.style.top='8px';
+  };
+  const hit=svg.querySelector('#hit');
+  const onMove=e=>{const r=svg.getBoundingClientRect();const px=(e.clientX-r.left)/(r.width/W);let i=Math.round((px-m.l)/(iw/Math.max(1,years.length-1)));i=Math.max(0,Math.min(years.length-1,i));show(i)};
+  hit.addEventListener('pointermove',onMove);hit.addEventListener('pointerdown',onMove);
+  hit.addEventListener('pointerleave',()=>{tip.hidden=true;xh.setAttribute('visibility','hidden');dots.innerHTML=''});
+}
+function niceStep(r){const p=Math.pow(10,Math.floor(Math.log10(r)));const f=r/p;return (f<1.5?1:f<3?2:f<7?5:10)*p}
+const ser=(get,years,ids=['SIS','SLU','SAG'])=>SCH.filter(s=>ids.includes(s.id)).map(s=>({...s,vals:years.map(y=>get(s.id,y))}));
+
+// ---------- tables ----------
+function cmpCell(v,ref,better,thr,f){
+  if(v==null)return `<td class="n">—</td>`;
+  let c='';
+  if(ref!=null&&better){const d=v-ref;if(Math.abs(d)>=thr-1e-9){const good=better==='high'?d>0:d<0;c=good?'good':'bad'}}
+  const ic=c==='good'?'<i aria-label="лучше среднего">▲</i>':c==='bad'?'<i aria-label="хуже среднего">▼</i>':'';
+  return `<td class="n">${c?`<span class="cell ${c}">${f(v)}${ic}</span>`:f(v)}</td>`;
+}
+const thHead=(first,withRef=true,refName='Копенгаген')=>`<thead><tr><th>${first}</th>${SCH.map(s=>`<th><span class="sw ${s.cls}"></span>${s.short}</th>`).join('')}${withRef?`<th>${refName}</th>`:''}</tr></thead>`;
+function seg(el,opts,cur,on){
+  el.innerHTML=opts.map(([k,l])=>`<button type="button" data-k="${k}" aria-pressed="${k===cur}">${l}</button>`).join('');
+  el.onclick=e=>{const b=e.target.closest('button');if(!b)return;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));on(b.dataset.k)};
+}
+const legendHTML=(ids=['SIS','SLU','SAG'],ref=true)=>SCH.filter(s=>ids.includes(s.id)).map(s=>`<span><i class="sw ${s.cls}"></i>${s.name}</span>`).join('')+(ref?`<span><i class="sw ref"></i>Среднее по Копенгагену</span>`:'');
+
+// ---------- header ----------
+const last=(s,k)=>{const ys=Object.keys(D.over[s]||{}).sort();for(let i=ys.length-1;i>=0;i--){const v=D.over[s][ys[i]][k];if(v!=null)return [v,ys[i]]}return [null,null]};
+const SDESC={SIS:'Районная школа, 0–9 классы, открыта в 2012 году.',SLU:'Районная школа, открыта в 2019/20; растёт по классу в год, старших классов пока нет.',SAG:'Коммунальная школа с музыкальным профилем и вступительным отбором, 0–9 классы.'};
+document.getElementById('schools').innerHTML=SCH.map(s=>{
+  const [el]=last(s.id,'Elevtal'),[kv]=last(s.id,'Klassekvotient');
+  return `<div class="school"><div class="nm"><span class="sw ${s.cls}"></span>${s.name}</div><div class="facts">${SDESC[s.id]}</div><div class="facts">${el?Math.round(el)+' учеников':''} · ${fmt(kv)} в классе (2025/26)</div></div>`}).join('');
+
+// ---------- summary ----------
+(function(){
+  const rows=[];
+  const Y='2025/2026',Yp='2024/2025';
+  const ovRow=(label,key,f,better,thr,note)=>{
+    const vals=SCH.map(s=>last(s.id,key));
+    const refs=SCH.map(s=>vals[SCH.indexOf(s)][1]?OV('SAG',vals[SCH.indexOf(s)][1],key+' Kommune'):null);
+    const yrsUsed=[...new Set(vals.map(v=>v[1]).filter(Boolean))].map(ylab).join(', ');
+    const refY=vals.find(v=>v[1])?.[1];const refV=refY?OV('SAG',refY,key+' Kommune'):null;
+    rows.push(`<tr><td>${label}<div class="small muted">${note||''}${yrsUsed?(note?' · ':'')+yrsUsed:''}</div></td>${vals.map((v,i)=>cmpCell(v[0],refs[i],better,thr,f)).join('')}<td class="n ref">${f(refV)}</td></tr>`);
+  };
+  const grp=t=>rows.push(`<tr><td class="grp" colspan="5">${t}</td></tr>`);
+  grp('Trivsel');
+  ovRow('Доля с высоким trivsel','Andel med højest trivsel',v=>fmtP(v),'high',1);
+  IND.forEach(([k,l])=>{
+    const vals=SCH.map(s=>((D.trivS[s.id]||{})[Y]||{})[k]??null);const ref=(D.trivKK[Y]||{})[k];
+    rows.push(`<tr><td>${l} (${IND_DA[k]})<div class="small muted">1–5 · 25/26</div></td>${vals.map(v=>cmpCell(v,ref,'high',0.1,fmt)).join('')}<td class="n ref">${fmt(ref)}</td></tr>`)});
+  grp('Faglighed');
+  ovRow('Средняя оценка, экзамены 9 класса','Karaktergennemsnit',v=>fmt(v),'high',0.2);
+  (function(){const f=v=>fmtS(v);const vals=SCH.map(s=>last(s.id,'SocRef Forskel'));
+    rows.push(`<tr><td>Эффект обучения (оценка − ожидание)<div class="small muted">${[...new Set(vals.map(v=>v[1]).filter(Boolean))].map(ylab).join(', ')}</div></td>${vals.map(v=>{if(v[0]==null)return '<td class="n">—</td>';const sig=OV(SCH[vals.indexOf(v)].id,v[1],'sig');return cmpCell(v[0],0,'high',0.2,x=>f(x)+(sig?` <span class="small muted">(${sig})</span>`:''))}).join('')}<td class="n ref">0</td></tr>`)})();
+  (function(){const vals=SCH.map(s=>{const o=D.kdm[s.id]||{};const ys=Object.keys(o).sort();for(let i=ys.length-1;i>=0;i--)if(o[ys[i]].da!=null)return [o[ys[i]],ys[i]];return [null,null]});
+    rows.push(`<tr><td>Датский / математика, 9 класс<div class="small muted">${[...new Set(vals.map(v=>v[1]).filter(Boolean))].map(ylab).join(', ')}</div></td>${vals.map(v=>`<td class="n">${v[0]?fmt(v[0].da)+' / '+fmt(v[0].ma):'—'}</td>`).join('')}<td class="n ref">—</td></tr>`)})();
+  grp('Пропуски и рамки');
+  (function(){const vals=SCH.map(s=>{const o=(D.frav[s.id]||{})[Yp];return o?o.tot:null});const ref=(D.frav.SAG[Yp]||{}).kk;
+    rows.push(`<tr><td>Пропуски, % дней<div class="small muted">24/25</div></td>${vals.map(v=>cmpCell(v,ref,'low',1,x=>fmtP(x))).join('')}<td class="n ref">${fmtP(ref)}</td></tr>`)})();
+  (function(){const vals=SCH.map(s=>{const o=(D.frav[s.id]||{})[Yp];return o?o.ulov:null});
+    rows.push(`<tr><td>из них прогулы (ulovligt)<div class="small muted">24/25</div></td>${vals.map(v=>`<td class="n">${fmtP(v)}</td>`).join('')}<td class="n ref">—</td></tr>`)})();
+  ovRow('Учеников в классе','Klassekvotient',v=>fmt(v),null,0);
+  ovRow('Уроки ведёт учитель с профилем (kompetencedækning)','Kompetencedækning',v=>fmtP(v),'high',1);
+  ovRow('Учатся дальше в сентябре после 9/10 класса','Overgang til UU fra 9. og 10. kl. sept året efter',v=>fmtP(v),'high',1);
+  ovRow('Учеников в школе','Elevtal',v=>v==null?'—':Math.round(v),null,0,'');
+  document.getElementById('summary').innerHTML=thHead('Показатель')+'<tbody>'+rows.join('')+'</tbody>';
+})();
+
+// ---------- trivsel whole school ----------
+document.getElementById('legend-main').innerHTML=legendHTML();
+(function(){
+  const Y1=yrs(2018,2025);
+  lineChart(document.getElementById('c-hoj'),{years:Y1,series:ser((s,y)=>OV(s,y,'Andel med højest trivsel'),Y1),ref:{vals:Y1.map(y=>OV('SAG',y,'Andel med højest trivsel Kommune'))},fmtV:v=>fmtP(v)});
+  const Y2=yrs(2014,2025);
+  const tv=k=>(s,y)=>((D.trivS[s]||{})[y]||{})[k]??null;
+  lineChart(document.getElementById('c-gen'),{years:Y2,series:ser(tv('gen'),Y2),ref:{vals:Y2.map(y=>(D.trivKK[y]||{}).gen??null)},domain:[3.2,4.2]});
+  const box=document.getElementById('c-ind');
+  box.innerHTML=IND.slice(1).map(([k,l])=>`<div class="card"><h3>${l}<span class="muted" style="font-weight:400"> · ${IND_DA[k]}</span></h3><div class="chart" id="ci-${k}"></div></div>`).join('');
+  IND.slice(1).forEach(([k])=>lineChart(document.getElementById('ci-'+k),{years:Y2,series:ser(tv(k),Y2),ref:{vals:Y2.map(y=>(D.trivKK[y]||{})[k]??null)},domain:k==='sto'?[2.6,4.0]:[3.2,4.4],h:220}));
+})();
+
+// ---------- trivsel by grade ----------
+(function(){
+  let ind='gen',grade='6',year='2025/2026';
+  const Yall=yrs(2014,2025);
+  const gv=(s,y,g,k)=>((((D.trivG[s]||{})[y]||{})[g])||{})[k]??null;
+  const gk=(y,g,k)=>(((D.trivGK[y]||{})[g])||{})[k]??null;
+  const render=()=>{
+    const lbl=IND.find(i=>i[0]===ind)[1];
+    document.getElementById('g-chart-title').textContent=`${lbl} trivsel, ${grade} класс`;
+    lineChart(document.getElementById('c-grade'),{years:Yall,series:ser((s,y)=>gv(s,y,grade,ind),Yall),ref:{vals:Yall.map(y=>gk(y,grade,ind))},domain:ind==='sto'?[2.4,4.0]:[3.0,4.6]});
+    const ns=SCH.map(s=>{const vs=Yall.map(y=>gv(s.id,y,grade,'n')).filter(v=>v!=null);return vs.length?`${s.short}: ${Math.min(...vs)}–${Math.max(...vs)}`:`${s.short}: нет данных`});
+    document.getElementById('g-cap').textContent='Ответов в классе за год — '+ns.join(' · ');
+    const rows=Yall.slice().reverse().filter(y=>SCH.some(s=>gv(s.id,y,grade,ind)!=null)).map(y=>{const ref=gk(y,grade,ind);return `<tr><td class="n">${y}</td>${SCH.map(s=>cmpCell(gv(s.id,y,grade,ind),ref,'high',0.2,fmt)).join('')}<td class="n ref">${fmt(ref)}</td></tr>`});
+    document.getElementById('t-grade').innerHTML=thHead('Год')+'<tbody>'+rows.join('')+'</tbody>';
+    document.getElementById('g-matrix-title').textContent=`Все классы за ${year}: ${lbl.toLowerCase()} trivsel`;
+    const mrows=['4','5','6','7','8','9'].map(g=>{const ref=gk(year,g,ind);return `<tr><td>${g} класс</td>${SCH.map(s=>cmpCell(gv(s.id,year,g,ind),ref,'high',0.2,fmt)).join('')}<td class="n ref">${fmt(ref)}</td></tr>`});
+    document.getElementById('t-matrix').innerHTML=thHead('Класс')+'<tbody>'+mrows.join('')+'</tbody>';
+  };
+  seg(document.getElementById('g-ind'),IND,ind,k=>{ind=k;render()});
+  seg(document.getElementById('g-grade'),['4','5','6','7','8','9'].map(g=>[g,g]),grade,k=>{grade=k;render()});
+  seg(document.getElementById('g-year'),yrs(2019,2025).map(y=>[y,ylab(y)]),year,k=>{year=k;render()});
+  render();
+})();
+
+// ---------- academics ----------
+(function(){
+  const ids=['SIS','SAG'];
+  document.getElementById('legend-acad').innerHTML=legendHTML(ids);
+  const Y=yrs(2018,2025);
+  lineChart(document.getElementById('c-kar'),{years:Y,series:ser((s,y)=>OV(s,y,'Karaktergennemsnit'),Y,ids),ref:{vals:Y.map(y=>OV('SAG',y,'Karaktergennemsnit Kommune'))}});
+  const Y2=yrs(2018,2024);
+  lineChart(document.getElementById('c-soc'),{years:Y2,series:ser((s,y)=>OV(s,y,'SocRef Forskel'),Y2,ids),fmtV:fmtS,zero:true,domain:[-1,1]});
+  const M=[
+    ['kar','Средняя оценка',y=>({vals:SCH.map(s=>OV(s.id,y,'Karaktergennemsnit')),ref:OV('SAG',y,'Karaktergennemsnit Kommune'),b:'high',t:0.2,f:fmt}),yrs(2018,2025)],
+    ['soc','Эффект обучения',y=>({vals:SCH.map(s=>OV(s.id,y,'SocRef Forskel')),ref:0,b:'high',t:0.2,f:v=>fmtS(v),sig:SCH.map(s=>OV(s.id,y,'sig'))}),yrs(2018,2024)],
+    ['exp','Ожидаемая оценка (soc. ref.)',y=>({vals:SCH.map(s=>OV(s.id,y,'SocRef Socioøkonomisk reference')),ref:null,f:fmt}),yrs(2018,2024)],
+    ['da','Датский',y=>({vals:SCH.map(s=>((D.kdm[s.id]||{})[y]||{}).da??null),ref:null,f:fmt}),yrs(2014,2025)],
+    ['ma','Математика',y=>({vals:SCH.map(s=>((D.kdm[s.id]||{})[y]||{}).ma??null),ref:null,f:fmt}),yrs(2014,2025)],
+    ['min2','≥ 02 по датскому и математике',y=>({vals:SCH.map(s=>((D.kdm[s.id]||{})[y]||{}).min2??null),ref:null,f:v=>fmtP(v)}),yrs(2014,2025)]
+  ];
+  let cur='kar';
+  const render=()=>{const [k,l,get,Y]=M.find(m=>m[0]===cur);
+    const rows=Y.slice().reverse().map(y=>{const r=get(y);if(r.vals.every(v=>v==null))return '';return `<tr><td class="n">${y}</td>${r.vals.map((v,i)=>cmpCell(v,r.ref,r.b,r.t,x=>r.f(x)+(r.sig&&r.sig[i]?` <span class="small muted">${r.sig[i]}</span>`:''))).join('')}<td class="n ref">${r.ref==null?'—':r.f(r.ref)}</td></tr>`}).join('');
+    document.getElementById('t-acad').innerHTML=thHead('Год',true,cur==='soc'?'Ожидание':'Копенгаген')+'<tbody>'+rows+'</tbody>';};
+  seg(document.getElementById('a-metric'),M.map(m=>[m[0],m[1]]),cur,k=>{cur=k;render()});render();
+})();
+
+// ---------- fravær ----------
+(function(){
+  const Y=yrs(2019,2024);
+  const fv=k=>(s,y)=>((D.frav[s]||{})[y]||{})[k]??null;
+  lineChart(document.getElementById('c-frav'),{years:Y,series:ser(fv('tot'),Y),ref:{vals:Y.map(y=>(D.frav.SAG[y]||{}).kk??null)},fmtV:v=>fmtP(v)});
+  lineChart(document.getElementById('c-ulov'),{years:Y,series:ser(fv('ulov'),Y),fmtV:v=>fmtP(v),zero:true});
+  const M=[['tot','Все пропуски','low',1],['syg','Болезнь',null],['lov','Уважительные',null],['ulov','Прогулы',null],['o10','Доля учеников с >10 % пропусков','low',3]];
+  let cur='tot';
+  const render=()=>{const [k,l,b,t]=M.find(m=>m[0]===cur);
+    const rows=Y.slice().reverse().map(y=>{const ref=k==='tot'?(D.frav.SAG[y]||{}).kk:null;return `<tr><td class="n">${y}</td>${SCH.map(s=>cmpCell(fv(k)(s.id,y),ref,b,t,x=>fmtP(x))).join('')}<td class="n ref">${fmtP(ref)}</td></tr>`}).join('');
+    document.getElementById('t-frav').innerHTML=thHead('Год')+'<tbody>'+rows+'</tbody>';};
+  seg(document.getElementById('f-metric'),M.map(m=>[m[0],m[1]]),cur,k=>{cur=k;render()});render();
+})();
+
+// ---------- rammer ----------
+(function(){
+  const Y=yrs(2018,2025);
+  const M=[
+    ['Elevtal','Учеников в школе',null,0,v=>v==null?'—':String(Math.round(v)),'Gns. elevtal Kommune','Средняя школа Копенгагена'],
+    ['Klassekvotient','Учеников в классе',null,0,fmt,'Klassekvotient Kommune','Копенгаген'],
+    ['Kompetencedækning','Kompetencedækning, %','high',1,v=>fmtP(v),'Kompetencedækning Kommune','Копенгаген'],
+    ['Overgang til UU fra 9. og 10. kl. sept året efter','Учатся дальше после 9/10 класса, %','high',1,v=>fmtP(v),'Overgang til UU fra 9. og 10. kl. sept året efter Kommune','Копенгаген']
+  ];
+  let cur='Klassekvotient';
+  const render=()=>{const [k,l,b,t,f,rk,rn]=M.find(m=>m[0]===cur);
+    document.getElementById('r-title').textContent=l;
+    lineChart(document.getElementById('c-ram'),{years:Y,series:ser((s,y)=>OV(s,y,k),Y),ref:{vals:Y.map(y=>OV('SAG',y,rk))},fmtV:f,zero:k==='Elevtal',refLabel:rn});
+    const rows=Y.slice().reverse().map(y=>{const ref=OV('SAG',y,rk);if(SCH.every(s=>OV(s.id,y,k)==null))return '';return `<tr><td class="n">${y}</td>${SCH.map(s=>cmpCell(OV(s.id,y,k),ref,b,t,f)).join('')}<td class="n ref">${f(ref)}</td></tr>`}).join('');
+    document.getElementById('t-ram').innerHTML=thHead('Год',true,rn)+'<tbody>'+rows+'</tbody>';};
+  seg(document.getElementById('r-metric'),M.map(m=>[m[0],m[1].replace(', %','')]),cur,k=>{cur=k;render()});render();
+})();
+
+// ---------- findings ----------
+document.getElementById('findings').innerHTML="<li><b>Trivsel, одинаковые классы:</b> в каждом сопоставимом классе (4–6) Sluseholmen выше всех. Отрыв от Skolen i Sydhavnen — 0,3–0,6 балла, от Sankt Annæ — 0,1–0,4. Сильнее всего разрыв по «støtte og inspiration»: в 6 классе в 2025/26 — 3,7 против 2,9 у двух других школ.</li><li><b>Sankt Annæ</b> стабильна 12 лет: индикаторы на уровне Копенгагена или чуть выше (общий trivsel 3,7 при среднем 3,7), доля с высоким trivsel — 92,4 % при среднем по городу 89,9 %.</li><li><b>Skolen i Sydhavnen</b> просела с 3,7–3,8 (2016–2020) до 3,4 в 2023/24 и вернулась к 3,6, то есть к среднему по Копенгагену. Слабое место — 6 класс (общий 3,4, поддержка 2,9) и 5 класс в 2023/24.</li><li><b>Оценки:</b> Sankt Annæ — 8,4, Sydhavnen — 7,3, среднее по городу — 7,5 (2025/26). Но у Sankt Annæ ученики отобраны при поступлении: с поправкой на их фон результат «på niveau» (+0,3), а у Sydhavnen — «under niveau» (−0,6 в 2024/25). Датский и математика в Sydhavnen в 2025/26 — 6,8 и 6,3.</li><li><b>Пропуски</b> (2024/25): Sankt Annæ и Sluseholmen — по 7,0 %, Sydhavnen — 7,9 %, среднее по городу — 8,1 %. Прогулов без причины в Sydhavnen в 3–4 раза больше: 1,6 % против 0,4–0,6 %.</li><li><b>Рамки:</b> в Sankt Annæ заметно больше учеников в классе (27,5 против примерно 21,5). У Sluseholmen самая низкая доля уроков с профильным учителем — 69,2 % при 84,2 % по городу. После 9 класса дальше учатся 96 % выпускников Sankt Annæ и 88 % выпускников Sydhavnen (2022/23).</li>";
+</script>
+
+</body>
+</html>
